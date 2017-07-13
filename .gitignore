@@ -1,5 +1,6 @@
 *.jl.cov
 *.jl.*.cov
 *.jl.mem
+*.qmlc
 applications/times_problems_config.jl
 applications/times_problems_log.txt

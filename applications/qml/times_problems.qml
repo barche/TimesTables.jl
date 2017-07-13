@@ -10,7 +10,7 @@ ApplicationWindow {
   width: Screen.desktopAvailableWidth*0.8
   height: width/φ
   visible: true
-  flags: Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
+  flags: frameless ? Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint : Qt.Window
 
   property double fontSize: 0.35*questionBar.height
 

@@ -12,6 +12,8 @@ function generate_default_config()
       const max_correct = 3
       const enable_logging = true
       const logfile = joinpath(dirname(@__FILE__), "times_problems_log.txt")
+      # Enable locking down the window (no frame)
+      const frameless = false
       """      
       )
     end
@@ -67,7 +69,7 @@ end
 @qmlfunction check_answer generate
 qmlfile = joinpath(dirname(@__FILE__), "qml", "times_problems.qml")
 
-if @qmlapp qmlfile φ problem max_correct
+if @qmlapp qmlfile φ problem max_correct frameless
   exec()
 end
 
