@@ -8,7 +8,7 @@ ApplicationWindow {
   id: appRoot
   title: "Times Problems"
   width: Screen.desktopAvailableWidth*0.8
-  height: width/φ
+  height: Screen.desktopAvailableWidth*0.8/φ
   visible: true
   flags: frameless ? Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint : Qt.Window
 
