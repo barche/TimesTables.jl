@@ -10,6 +10,14 @@ function generate_default_config()
       """
       # Number of questions to answer correctly
       const max_correct = 3
+      # Minimal number in a times computation
+      const times_min = 1
+      # Maximum number in a times computation
+      const times_max = 10
+      # Minimum of the subtraction result
+      const subtraction_min = 0
+      # Maximum sum of operands for addition and substraction
+      const addition_max = 100
       const enable_logging = true
       const logfile = joinpath(dirname(@__FILE__), "times_problems_log.txt")
       # Enable locking down the window (no frame)
@@ -22,6 +30,8 @@ end
 
 generate_default_config()
 include(CONFIG_FILE)
+
+const generator = DefaultOpGenerator(times_min, times_max, subtraction_min, addition_max)
 
 """
 Keep track of the current question and the answer
@@ -47,7 +57,7 @@ function writelog(p::Problem)
 end
 
 # The current problem
-const problem = Problem(generate(), 0, 0, "STARTUP")
+const problem = Problem(generate(generator), 0, 0, "STARTUP")
 
 function check_answer(p::Problem, answer::String)
   p.answer = parse(Int, answer)
@@ -57,7 +67,7 @@ function check_answer(p::Problem, answer::String)
       p.state = "FINISHED";
     else
       p.state = "CORRECT";
-      p.question = generate()
+      p.question = generate(generator)
     end
   else
     p.num_correct = 0;

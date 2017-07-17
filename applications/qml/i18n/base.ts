@@ -20,7 +20,7 @@
     </message>
     <message>
         <location filename="../times_problems.qml" line="108"/>
-        <source>All done!</source>
+        <source>All done! Click to close.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

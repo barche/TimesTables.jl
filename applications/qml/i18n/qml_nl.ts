@@ -14,8 +14,8 @@
         <translation>Fout, probeer opnieuw.</translation>
     </message>
     <message>
-        <source>All done!</source>
-        <translation>Helemaal klaar, goed zo!</translation>
+        <source>All done! Click to close.</source>
+        <translation>Helemaal klaar, goed zo! Klik om te sluiten.</translation>
     </message>
 </context>
 </TS>

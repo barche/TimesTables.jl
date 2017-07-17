@@ -105,7 +105,7 @@ ApplicationWindow {
         State {
             name: "FINISHED"
             PropertyChanges { target: feedback; color: "blue" }
-            PropertyChanges { target: statusText; text: qsTr("All done!") }
+            PropertyChanges { target: statusText; text: qsTr("All done! Click to close.") }
             PropertyChanges {
               target: questionBar
               enabled: false
