@@ -59,10 +59,19 @@ end
 # The current problem
 const problem = Problem(generate(generator), 0, 0, "STARTUP")
 
+function exit_logging()
+  if problem.num_correct != max_correct
+    writelog("PREMATURE EXIT")
+  end
+end
+
+atexit(exit_logging)
+
 function check_answer(p::Problem, answer::String)
   p.answer = parse(Int, answer)
   if check(p.question, p.answer)
-    p.num_correct += 1;
+    p.num_correct += 1
+    writelog(p)
     if p.num_correct == max_correct
       p.state = "FINISHED";
     else
@@ -71,9 +80,9 @@ function check_answer(p::Problem, answer::String)
     end
   else
     p.num_correct = 0;
+    writelog(p)
     p.state = "ERROR";
   end
-  writelog(p)
 end
 
 @qmlfunction check_answer generate
@@ -81,8 +90,4 @@ qmlfile = joinpath(dirname(@__FILE__), "qml", "times_problems.qml")
 
 if @qmlapp qmlfile φ problem max_correct frameless
   exec()
-end
-
-if problem.num_correct != max_correct
-  writelog("PREMATURE EXIT")
 end

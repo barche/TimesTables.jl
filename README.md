@@ -19,6 +19,7 @@ println(check(prob, parse(Int,readline(STDIN))) ? "Correct" : "Wrong, the correc
 ## GUI
 The GUI by default asks the user to generate solve 3 consecutive problems correctly. Parameters for the GUI can be adjusted in the
 `times_problems_config.jl` file that is generated automatically, answers can be checked in the log file. Screenshot:
+
 ![Screenshot](screenshot.png?raw=true "Plots example")
 
 By setting `frameless` to true in the options the GUI can be made to stay on top and be apparently "unclosable", which can be useful to "force" the target to solve the exercices, especially when the GUI lanches automatically upon login and again after a certain timeout.
