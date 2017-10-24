@@ -17,6 +17,7 @@ ApplicationWindow {
   function submit() {
     Julia.check_answer(problem, answer.text);
     problem.update();
+    Julia.playsound();
     answer.text = "";
   }
 
@@ -133,7 +134,7 @@ ApplicationWindow {
         State {
             name: "CORRECT"
             PropertyChanges { target: feedback; color: "green"}
-            PropertyChanges { target: statusText; text: "😄" }
+            PropertyChanges { target: statusText; text: problem.happyface }
         },
         State {
             name: "ERROR"
