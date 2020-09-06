@@ -9,6 +9,7 @@ The purpose of this package is to generate and test simple math problems for pri
 In Pkg mode (hit `]`):
 
 ```julia
+add https://github.com/JuliaAudio/PortAudio.jl.git
 add https://github.com/barche/TimesTables.jl.git
 ```
 
