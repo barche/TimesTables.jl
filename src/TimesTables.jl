@@ -8,7 +8,7 @@ using Logging
 import FileIO
 
 # Sound stuff
-import PortAudio
+#import PortAudio
 import LibSndFile
 
 export TimesOp, Multiplication, Division, Addition, Subtraction, OpGenerator, DefaultOpGenerator
@@ -196,8 +196,8 @@ const cheer = Ref{Any}()
 const ohno = Ref{Any}()
 const woohoo = Ref{Any}()
 
-const audio_out = Ref{PortAudio.PortAudioStream}()
-playsound(s) = PortAudio.write(audio_out[], s)
+#const audio_out = Ref{PortAudio.PortAudioStream}()
+playsound(s) = nothing #PortAudio.write(audio_out[], s)
 
 function julia_main()
   config = getconfig()
@@ -208,7 +208,7 @@ function julia_main()
   ohno[] = FileIO.load(joinpath(soundsdir, "ohno.wav"))
   woohoo[] = FileIO.load(joinpath(soundsdir, "woohoo.wav"))
 
-  audio_out[] = PortAudio.PortAudioStream(0, 2)
+  #audio_out[] = PortAudio.PortAudioStream(0, 2)
 
   if config["uselogfile"]
     logio = io = open(joinpath(first(DEPOT_PATH), "logs", "TimesTables.log"), "a+")

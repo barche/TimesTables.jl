@@ -273,14 +273,6 @@ git-tree-sha1 = "7ce1a60df1a8eb61df4cef5698abc9a18575c91f"
 uuid = "f27b6e38-b328-58d1-80ce-0feddd5e7a45"
 version = "1.1.7"
 
-[[PortAudio]]
-deps = ["Libdl", "LinearAlgebra", "SampledSignals", "libportaudio_jll"]
-git-tree-sha1 = "6d0b55a02f6479f95681790004f5a86e8fa3393b"
-repo-rev = "master"
-repo-url = "https://github.com/JuliaAudio/PortAudio.jl.git"
-uuid = "80ea8bcb-4634-5cb3-8ee8-a132660d1d2d"
-version = "1.1.0"
-
 [[Printf]]
 deps = ["Unicode"]
 uuid = "de0858da-6303-5e67-8744-51eddeeeb8d7"
@@ -504,12 +496,6 @@ git-tree-sha1 = "fdd89e5ab270ea0f2a0174bd9093e557d06d4bfa"
 uuid = "83775a58-1f1d-513f-b197-d71354ab007a"
 version = "1.2.11+16"
 
-[[alsa_jll]]
-deps = ["Libdl", "Pkg"]
-git-tree-sha1 = "04ec50d2469ab57b512f0edc6bd56cc049daeee4"
-uuid = "45378030-f8ea-5b20-a7c7-1a9d95efb90e"
-version = "1.2.1-1+1"
-
 [[jlqml_jll]]
 deps = ["Libdl", "Pkg", "Qt_jll", "libcxxwrap_julia_jll"]
 git-tree-sha1 = "bae0c1f409e0f9365bbceec7fb051416046e6e9a"
@@ -521,12 +507,6 @@ deps = ["Libdl", "Pkg"]
 git-tree-sha1 = "1b2520ea0c1d5cbc12e8a97c15427133d726f743"
 uuid = "3eaa8342-bff7-56a5-9981-c04077f7cee7"
 version = "0.8.0+0"
-
-[[libportaudio_jll]]
-deps = ["Libdl", "Pkg", "alsa_jll"]
-git-tree-sha1 = "7a5bcc2dcdce9ff8565768761ab3331a8a73b104"
-uuid = "2d7b7beb-0762-5160-978e-1ab83a1e8a31"
-version = "19.6.0+2"
 
 [[libsndfile_jll]]
 deps = ["FLAC_jll", "Libdl", "Ogg_jll", "Pkg", "libvorbis_jll"]
