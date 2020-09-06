@@ -1,5 +1,5 @@
 using TimesTables
-using Base.Test
+using Test
 
 @testset "Multiplication" begin
   m = Multiplication(3,4)

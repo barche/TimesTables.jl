@@ -1,5 +1,5 @@
-import QtQuick 2.0
-import QtQuick.Controls 1.0
+import QtQuick 2.6
+import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
 import org.julialang 1.0
@@ -10,14 +10,14 @@ ApplicationWindow {
   width: Screen.desktopAvailableWidth*0.8
   height: Screen.desktopAvailableWidth*0.8/φ
   visible: true
-  flags: frameless ? Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint : Qt.Window
+  flags: lockedwindow ? Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint : Qt.Window
 
   property double fontSize: 0.35*questionBar.height
 
   function submit() {
-    Julia.check_answer(problem, answer.text);
-    problem.update();
+    problem.answer = answer.text;
     answer.text = "";
+    problem.answer = ""; // Workaround for setting the same value twice in a row
   }
 
   ColumnLayout {
@@ -33,13 +33,13 @@ ApplicationWindow {
 
       Text {
         id: questionText
-        text: problem.question.julia_string() + " = "
+        text: problem.question + " = "
         font.pixelSize: appRoot.fontSize
       }
 
       TextField {
           id: answer
-          Layout.preferredWidth: 0.15*appRoot.width
+          Layout.preferredWidth: 0.25*appRoot.width
           Layout.preferredHeight: 0.5*appRoot.height*(1-1/φ)
           font.pixelSize: appRoot.fontSize
           horizontalAlignment: TextInput.AlignHCenter
@@ -77,7 +77,7 @@ ApplicationWindow {
           Layout.alignment: Qt.AlignCenter
           Layout.preferredHeight: 0.1*questionBar.height
           Layout.preferredWidth: 0.9*questionBar.width
-          value: problem.num_correct / max_correct
+          value: problem.numcorrect / problem.maxnumcorrect
         }
       }
 
@@ -95,7 +95,7 @@ ApplicationWindow {
         State {
             name: "CORRECT"
             PropertyChanges { target: feedback; color: "green"}
-            PropertyChanges { target: statusText; text: qsTr("Correct, try the next one!") }
+            PropertyChanges { target: statusText; text: "🎉 " + qsTr("Correct, try the next one!")  + " 🎉" }
         },
         State {
             name: "ERROR"
@@ -105,7 +105,7 @@ ApplicationWindow {
         State {
             name: "FINISHED"
             PropertyChanges { target: feedback; color: "blue" }
-            PropertyChanges { target: statusText; text: qsTr("All done! Click to close.") }
+            PropertyChanges { target: statusText; text: "🎉 " + qsTr("All done! Click to close.") + " 🎉" }
             PropertyChanges {
               target: questionBar
               enabled: false

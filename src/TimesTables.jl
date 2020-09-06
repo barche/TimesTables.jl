@@ -1,5 +1,16 @@
 module TimesTables
 
+using QML
+using Observables
+using Pkg.TOML
+using Dates
+using Logging
+import FileIO
+
+# Sound stuff
+import PortAudio
+import LibSndFile
+
 export TimesOp, Multiplication, Division, Addition, Subtraction, OpGenerator, DefaultOpGenerator
 export compute, check, generate
 
@@ -124,5 +135,114 @@ Base.print(io::IO, o::Multiplication) = write(io, "$(o.a) × $(o.b)")
 Base.print(io::IO, o::Division) = write(io, "$(o.a) : $(o.b)")
 Base.print(io::IO, o::Addition) = write(io, "$(o.a) + $(o.b)")
 Base.print(io::IO, o::Subtraction) = write(io, "$(o.a) - $(o.b)")
+
+function getconfig()
+  configfile = joinpath(first(DEPOT_PATH), "prefs", "TimesTables.toml")
+  if !isfile(configfile)
+    mkpath(dirname(configfile))
+    defaultconfig = Dict(
+      "timesmin" => 1,
+      "timesmax" => 10,
+      "subtractionmin" => 0,
+      "additionmax" => 100,
+      "maxnumcorrect" => 3,
+      "uselogfile" => false,
+      "lockedwindow" => false
+    )
+    open(configfile, write=true) do f
+      TOML.print(f, defaultconfig)
+    end
+  end
+  return TOML.parsefile(configfile)
+end
+
+const generator = Ref{OpGenerator}()
+const currentop = Observable{TimesOp}()
+const currentopstring = Observable("")
+const answerstring = Observable("")
+const numcorrect = Observable(0)
+const maxnumcorrect = Observable(0)
+const state = Observable("STARTUP")
+
+on(currentop) do op
+  currentopstring[] = string(op)
+end
+
+on(answerstring) do s
+  if isempty(s)
+    return
+  end
+  answer = parse(Int, s)
+  if check(currentop[], answer)
+    numcorrect[] += 1
+    @info "Correct answer for $(currentop[]): $s"
+    if numcorrect[] == maxnumcorrect[]
+      state[] = "FINISHED";
+      playsound(cheer[])
+    else
+      state[] = "CORRECT";
+      currentop[] = generate(generator[])
+      playsound(woohoo[])
+    end
+  else
+    numcorrect[] = 0;
+    @info "Wrong answer for $(currentop[]): $s"
+    state[] = "ERROR";
+    playsound(ohno[])
+  end
+end
+
+const cheer = Ref{Any}()
+const ohno = Ref{Any}()
+const woohoo = Ref{Any}()
+
+const audio_out = Ref{PortAudio.PortAudioStream}()
+playsound(s) = PortAudio.write(audio_out[], s)
+
+function julia_main()
+  config = getconfig()
+
+  soundsdir = joinpath(@__DIR__, "sounds")
+
+  cheer[] = FileIO.load(joinpath(soundsdir, "cheer.wav"))
+  ohno[] = FileIO.load(joinpath(soundsdir, "ohno.wav"))
+  woohoo[] = FileIO.load(joinpath(soundsdir, "woohoo.wav"))
+
+  audio_out[] = PortAudio.PortAudioStream(0, 2)
+
+  if config["uselogfile"]
+    logio = io = open(joinpath(first(DEPOT_PATH), "logs", "TimesTables.log"), "a+")
+    global_logger(SimpleLogger(logio))
+  end
+
+  generator[] = DefaultOpGenerator(config["timesmin"], config["timesmax"], config["subtractionmin"], config["additionmax"])
+  numcorrect[] = 0
+  maxnumcorrect[] = config["maxnumcorrect"]
+  currentop[] = generate(generator[])
+  state[] = "STARTUP"
+  qmlfile = joinpath(dirname(@__FILE__), "qml", "times_problems.qml")
+  load(qmlfile,
+    φ = Float64(Base.MathConstants.golden),
+    lockedwindow = config["lockedwindow"],
+    problem = JuliaPropertyMap(
+      "question" => currentopstring,
+      "answer" => answerstring,
+      "state" => state,
+      "numcorrect" => numcorrect,
+      "maxnumcorrect" => maxnumcorrect,
+    ))
+
+  exec()
+
+  if numcorrect[] != maxnumcorrect[]
+    @warn "Premature exit on $(now())"
+  else
+    @info "Normal exit on $(now())"
+  end
+
+  if config["uselogfile"]
+    close(logio)
+  end
+end
 
 end # module
