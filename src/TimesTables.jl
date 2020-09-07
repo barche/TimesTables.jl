@@ -243,6 +243,8 @@ function julia_main()
   if config["uselogfile"]
     close(logio)
   end
+
+  return 0
 end
 
 end # module
