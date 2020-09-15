@@ -9,14 +9,17 @@ using Logging
 import FileIO
 
 # Sound stuff
-#import PortAudio
-import LibSndFile
+# import PortAudio
+# import LibSndFile
 
 export TimesOp, Multiplication, Division, Addition, Subtraction, OpGenerator, DefaultOpGenerator
 export compute, check, generate
 
-qmlfile() = joinpath(artifact"timestables-assets", "qml", "times_problems.qml")
-soundsdir() = joinpath(artifact"timestables-assets", "sounds")
+const artifact_version = v"0.0.1"
+
+assetroot() = joinpath(artifact"timestables-assets", "timestables-assets-$(artifact_version)")
+qmlfile() = joinpath(assetroot(), "qml", "times_problems.qml")
+soundsdir() = joinpath(assetroot(), "sounds")
 
 """
 Base type for all operationd, e.g. multiplication and division
@@ -206,9 +209,9 @@ playsound(s) = nothing #PortAudio.write(audio_out[], s)
 function julia_main()
   config = getconfig()
 
-  cheer[] = FileIO.load(joinpath(soundsdir(), "cheer.wav"))
-  ohno[] = FileIO.load(joinpath(soundsdir(), "ohno.wav"))
-  woohoo[] = FileIO.load(joinpath(soundsdir(), "woohoo.wav"))
+  cheer[] = nothing # FileIO.load(joinpath(soundsdir(), "cheer.wav"))
+  ohno[] = nothing # FileIO.load(joinpath(soundsdir(), "ohno.wav"))
+  woohoo[] = nothing # FileIO.load(joinpath(soundsdir(), "woohoo.wav"))
 
   #audio_out[] = PortAudio.PortAudioStream(0, 2)
 

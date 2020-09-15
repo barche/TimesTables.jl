@@ -6,7 +6,6 @@ version = "0.1.0"
 [deps]
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
 FileIO = "5789e2e9-d7fb-5bc7-8068-2c6fae9b9549"
-LibSndFile = "b13ce0c6-77b0-50c6-a2db-140568b8d1a5"
 Logging = "56ddb016-857b-54e1-b83d-db4d58db5568"
 Observables = "510215fc-4207-5dde-b226-833fc4488ee2"
 Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
