@@ -42,3 +42,7 @@ This file is auto-generated with default suitable for the second year of primary
 * `maxnumcorrect`: Number of consecutive correct answers before the exercise is finished
 * `uselogfile`: Log operations to `~/.julia/logs/TimesTables.log`
 * `lockedwindow`: Keep the window on top and remove the border (no close button)
+
+## QML code
+
+To make a portable app, the QML code is now in a separate artifact, built from the repository at https://github.com/barche/timestables-assets
