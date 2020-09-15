@@ -2,6 +2,7 @@ module TimesTables
 
 using QML
 using Observables
+using Pkg.Artifacts
 using Pkg.TOML
 using Dates
 using Logging
@@ -13,6 +14,9 @@ import LibSndFile
 
 export TimesOp, Multiplication, Division, Addition, Subtraction, OpGenerator, DefaultOpGenerator
 export compute, check, generate
+
+qmlfile() = joinpath(artifact"timestables-assets", "qml", "times_problems.qml")
+soundsdir() = joinpath(artifact"timestables-assets", "sounds")
 
 """
 Base type for all operationd, e.g. multiplication and division
@@ -202,11 +206,9 @@ playsound(s) = nothing #PortAudio.write(audio_out[], s)
 function julia_main()
   config = getconfig()
 
-  soundsdir = joinpath(@__DIR__, "sounds")
-
-  cheer[] = FileIO.load(joinpath(soundsdir, "cheer.wav"))
-  ohno[] = FileIO.load(joinpath(soundsdir, "ohno.wav"))
-  woohoo[] = FileIO.load(joinpath(soundsdir, "woohoo.wav"))
+  cheer[] = FileIO.load(joinpath(soundsdir(), "cheer.wav"))
+  ohno[] = FileIO.load(joinpath(soundsdir(), "ohno.wav"))
+  woohoo[] = FileIO.load(joinpath(soundsdir(), "woohoo.wav"))
 
   #audio_out[] = PortAudio.PortAudioStream(0, 2)
 
@@ -220,8 +222,7 @@ function julia_main()
   maxnumcorrect[] = config["maxnumcorrect"]
   currentop[] = generate(generator[])
   state[] = "STARTUP"
-  qmlfile = joinpath(dirname(@__FILE__), "qml", "times_problems.qml")
-  load(qmlfile,
+  load(qmlfile(),
     φ = Float64(Base.MathConstants.golden),
     lockedwindow = config["lockedwindow"],
     problem = JuliaPropertyMap(
