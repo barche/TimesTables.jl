@@ -30,7 +30,7 @@ jobs:
           arch: ${{ matrix.arch }}
       - uses: julia-actions/julia-buildpkg@latest
       - run: julia -e 'using Pkg; pkg"add PackageCompiler"'
-      - run: julia -e 'using PackageCompiler; create_app(pwd(), "TimesTablesApp"; precompile_execution_file="test/runtests.jl")'
+      - run: julia -e 'using PackageCompiler; create_app(pwd(), "TimesTablesApp"; precompile_statements_file="test/precompile_statements.jl")'
       - run: 7z a TimesTablesApp-$RUNNER_OS.zip TimesTablesApp
       - name: Upload Release Asset
         id: upload-release-asset 
